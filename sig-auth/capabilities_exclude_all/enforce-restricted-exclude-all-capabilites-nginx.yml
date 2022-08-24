@@ -1,0 +1,36 @@
+apiVersion: kyverno.io/v1
+# The `ClusterPolicy` kind applies to the entire cluster.
+kind: ClusterPolicy
+metadata:
+  name: enforce-restricted-exclude-capabilities-nginx
+# The `spec` defines properties of the policy.
+spec:
+  # The `validationFailureAction` tells Kyverno if the resource being validated should be allowed but reported (`audit`) or blocked (`enforce`).
+  validationFailureAction: enforce
+  # The `rules` is one or more rules which must be true.
+  rules:
+  - name: enforce-restricted-exclude-capabilities-nginx
+    # The `match` statement sets the scope of what will be checked. In this case, it is any `Namespace` resource.
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          namespaces:
+          - staging-psa-baseline-with-kyverno
+    # The `validate` statement tries to positively check what is defined. If the statement, when compared with the requested resource, is true, it is allowed. If false, it is blocked.
+    validate:
+      # this new type of rule only deals with PSS profiles
+      # as we need to check if the value in the resource
+      # is actually allowed by PSS
+      podSecurity:
+         level: restricted
+         # version must be a valid Kubernetes minor version,
+         # or `latest`.
+         version: v1.24
+         exclude:
+            # controlName is the Control defined in PSS
+            # +required
+          - controlName: "capabilities"
+            images:
+            - nodejs

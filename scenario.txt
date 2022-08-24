@@ -1,0 +1,28 @@
+1. Create kyverno policy
+
+k apply -f enforce-restricted-exclude-privileged-nginx.yml
+watch kubectl get ClusterPolicy
+
+2. Create a normal nginx pod
+--> Pod is created
+
+k create ns staging
+k run nginx --image=nginx -n staging
+k apply -f nginx.yaml
+
+3. Create a privileged nginx pod
+--> Forbidden
+
+k run nginx-privileged --image=nginx -n staging --privileged=true
+k apply -f nginx-privileged.yaml
+
+
+2 namespaces
+
+staging-baseline
+Baseline PSS - restricted kyverno
+Allowed
+
+staging-restricted
+Restricted PSS - restricted kyverno
+Forbidden
