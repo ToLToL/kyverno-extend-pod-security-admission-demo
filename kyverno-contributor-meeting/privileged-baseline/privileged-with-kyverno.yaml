@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: privileged-with-kyverno
+    pod-security.kubernetes.io/enforce-version: v1.23
+    pod-security.kubernetes.io/enforce: privileged
+  name: privileged-with-kyverno

@@ -1,0 +1,24 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-baseline-exclude-all-se-linux-options
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: enforce-baseline-exclude-all-se-linux-options
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          namespaces:
+          - privileged-with-kyverno
+    validate:
+      podSecurity:
+         level: baseline
+         version: v1.23
+         exclude:
+          - controlName: "SELinux"
+            images:
+              - nginx:1.23.1-alpine
+              - node:18-alpine3.15

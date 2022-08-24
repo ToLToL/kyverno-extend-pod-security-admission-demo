@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:1.23.1-alpine
+        name: nginx
+        resources: {}
+        securityContext:
+          seLinuxOptions:
+            role: "baz"
+      initContainers:
+      - image: node:18-alpine3.15
+        name: init-nodejs
+        resources: {}
+        securityContext:
+          seLinuxOptions:
+            role: "init-bazi"
