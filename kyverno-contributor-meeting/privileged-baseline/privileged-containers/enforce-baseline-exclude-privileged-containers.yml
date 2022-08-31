@@ -1,0 +1,32 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-baseline-exclude-privileged-containers
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: enforce-baseline-exclude-privileged-containers
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          namespaces:
+          - privileged-with-kyverno
+    validate:
+      podSecurity:
+         level: baseline
+         version: v1.24
+         exclude:
+          - controlName: "Privileged Containers"
+            restrictedField: spec.containers[*].securityContext.privileged
+            images:
+              - nginx:1.23.1-alpine
+            values:
+              - "true"
+          - controlName: "Privileged Containers"
+            restrictedField: spec.initContainers[*].securityContext.privileged
+            images:
+              - node:18-alpine3.15
+            values:
+              - "true"

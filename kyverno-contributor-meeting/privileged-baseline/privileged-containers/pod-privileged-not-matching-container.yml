@@ -6,25 +6,19 @@ metadata:
     run: nginx
   name: nginx
 spec:
-  securityContext:
-    seLinuxOptions:
-      role: "pod-baz"
-      type: "pod-type"
-      user: "pod-user"
   containers:
-  - image: nginx:1.23.1-alpine
+  - image: nginx:1.22.1-alpine # <-- image not matching exclude.images
+  # - image: nginx:1.23.1-alpine
     name: nginx
     resources: {}
     securityContext:
-      seLinuxOptions:
-        role: "container-baz"
+      privileged: true
   initContainers:
   - image: node:18-alpine3.15
     name: init-nodejs
     resources: {}
     securityContext:
-      seLinuxOptions:
-        role: "init-baz"
+      privileged: true
   dnsPolicy: ClusterFirst
   restartPolicy: Always
 status: {}

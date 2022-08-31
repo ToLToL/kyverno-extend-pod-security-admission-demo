@@ -19,14 +19,26 @@ spec:
          version: v1.24
          exclude:
           - controlName: "SELinux"
+            restrictedField: spec.securityContext.seLinuxOptions.role
+            values:
+              - pod-baz
+          - controlName: "SELinux"
+            restrictedField: spec.securityContext.seLinuxOptions.type
+            values:
+              - pod-type
+          - controlName: "SELinux"
+            restrictedField: spec.securityContext.seLinuxOptions.user
+            values:
+              - pod-user
+          - controlName: "SELinux"
             restrictedField: spec.containers[*].securityContext.seLinuxOptions.role
             images:
               - nginx:1.23.1-alpine
             values:
-              - baz
+              - container-baz
           - controlName: "SELinux"
             restrictedField: spec.initContainers[*].securityContext.seLinuxOptions.role
             images:
               - node:18-alpine3.15
             values:
-              - init-bazi
+              - init-baz
