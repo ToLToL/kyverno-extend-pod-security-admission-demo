@@ -43,7 +43,7 @@ Delete the pod:
 
 Excludes the specified restricted fields of `Privileged containers` control for selected containers.
 
-#### ####7. Try to run a Pod with privileged containers in baseline-without-kyverno namespace
+#### 7. Try to run a Pod with privileged containers in baseline-without-kyverno namespace
 `kubectl apply -f pod-privileged-container.yml -n privileged-with-kyverno`
 
 Expected result: Pod is created
